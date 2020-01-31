@@ -4,13 +4,11 @@ package devcom.marcos.triangularpos;
 public class Beacon {
     private final String macAddress;
     private final String name;
-    private double lat, lon;
+    private float lat, lon, dist;
 
-    public Beacon(String add, String name, double lat, double lon){
+    public Beacon(String add, String name){
         macAddress = add;
         this.name = name;
-        this.lat = lat;
-        this.lon = lon;
     }
 
     //Getters
@@ -22,21 +20,26 @@ public class Beacon {
         return name;
     }
 
-    public double getLat() {
+    public float getLat() {
         return lat;
     }
 
-    public double getLon() {
+    public float getLon() {
         return lon;
     }
 
-    //Setters
-    public void setLat(double lat) {
-        this.lat = lat;
+    public float getDist() {
+        return dist;
     }
 
-    public void setLon(double lon) {
+    //Setters
+    public void setLatLon(float lat, float lon) {
+        this.lat = lat;
         this.lon = lon;
+    }
+
+    public void setDist(float dist) {
+        this.dist = dist;
     }
 
     //Otros
