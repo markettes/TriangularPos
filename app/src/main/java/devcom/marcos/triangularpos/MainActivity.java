@@ -30,11 +30,10 @@ import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
-import static devcom.marcos.triangularpos.trilateration.Trilateration.Compute;
-
 public class MainActivity extends AppCompatActivity {
 
-    final int K = -63;
+    final int e = 0;
+    final int K = -87;
     Context here;
     MyView v;
     Paint pBeacon;
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     final Beacon b1 = new Beacon("C9:18:D4:BD:25:D8","iSBK105 #1");
     final Beacon b2 = new Beacon("F3:CF:9B:BA:B3:2C","iSBK105 #2");
     final Beacon b3 = new Beacon("EB:FA:E4:E1:CB:2E","iSBK105 #3");
+    Beacon[] bs = {b1,b2,b3};
 
 
     @Override
@@ -75,12 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
         pRange = new Paint();
         pRange.setStyle(Paint.Style.FILL);
-        pRange.setStrokeWidth(10);
         pRange.setColor(Color.RED);
 
         pSol = new Paint();
         pSol.setStyle(Paint.Style.FILL);
-        pSol.setStrokeWidth(35);
         pSol.setColor(Color.GREEN);
 
         pText = new Paint();
@@ -90,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
         //Inicio Programa
         super.onCreate(savedInstanceState);
         here = this;
-        //v = new MyView(this);
-        //setContentView(v);
 
         ASBleScanner scanner = new ASBleScanner((Activity) here, new ASScannerCallback() {
             @Override
@@ -106,15 +102,15 @@ public class MainActivity extends AppCompatActivity {
 
                 switch(result.getDevice().getAddress()){
                     case "C9:18:D4:BD:25:D8":
-                        b1.setDist((float)dis);
+                        b1.setDist((float)dis * 100);
                         Log.i("beacon1",rssi+" "+(float)dis);
                         break;
                     case "F3:CF:9B:BA:B3:2C":
-                        b2.setDist((float)dis);
+                        b2.setDist((float)dis * 100);
                         Log.i("beacon2",rssi+" "+(float)dis);
                         break;
                     case "EB:FA:E4:E1:CB:2E":
-                        b3.setDist((float)dis);
+                        b3.setDist((float)dis * 100);
                         Log.i("beacon3",rssi+" "+(float)dis);
                         break;
                 }
@@ -156,19 +152,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onDraw(final Canvas canvas) {
 
-            canvas.drawCircle(b1.getLat(), b1.getLon(), b1.getDist(), pRange);
-            canvas.drawCircle(b1.getLat(), b1.getLon(), 5, pBeacon);
-
-            canvas.drawCircle(b2.getLat(), b2.getLon(), b2.getDist(), pRange);
-            canvas.drawCircle(b2.getLat(), b2.getLon(), 5, pBeacon);
-
-            canvas.drawCircle(b3.getLat(), b3.getLon(), b3.getDist(), pRange);
-            canvas.drawCircle(b3.getLat(), b3.getLon(), 5, pBeacon);
+            for(int i = 0; i < 3; i++) {
+                canvas.drawCircle(bs[i].getLat() + e, bs[i].getLon() + e, bs[i].getDist(), pRange);
+                canvas.drawCircle(bs[i].getLat() + e, bs[i].getLon() + e, 5, pBeacon);
+            }
 
             if(centroid != null)
-                canvas.drawCircle((float) centroid[0], (float) centroid[1], 30, pSol);
-
-
+                canvas.drawCircle((float) centroid[0], (float) centroid[1], 20, pSol);
         }
     }
 }
