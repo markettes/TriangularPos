@@ -32,7 +32,8 @@ import org.apache.commons.math3.linear.RealVector;
 
 public class MainActivity extends AppCompatActivity {
 
-    final int e = 0;
+
+    final int e = 200;
     final int K = -87;
     Context here;
     MyView v;
@@ -64,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Beacon conf
-        b1.setLatLon(100, 100);
-        b2.setLatLon(200, 200);
-        b3.setLatLon(300, 100);
+        b1.setLatLon(1*e, 1*e);
+        b2.setLatLon(2*e, 2*e);
+        b3.setLatLon(3*e, 1*e);
 
         //Paints para los puntos en pantalla
         pBeacon = new Paint();
@@ -102,15 +103,15 @@ public class MainActivity extends AppCompatActivity {
 
                 switch(result.getDevice().getAddress()){
                     case "C9:18:D4:BD:25:D8":
-                        b1.setDist((float)dis * 100);
+                        b1.setDist((float)dis * e);
                         Log.i("beacon1",rssi+" "+(float)dis);
                         break;
                     case "F3:CF:9B:BA:B3:2C":
-                        b2.setDist((float)dis * 100);
+                        b2.setDist((float)dis * e);
                         Log.i("beacon2",rssi+" "+(float)dis);
                         break;
                     case "EB:FA:E4:E1:CB:2E":
-                        b3.setDist((float)dis * 100);
+                        b3.setDist((float)dis * e);
                         Log.i("beacon3",rssi+" "+(float)dis);
                         break;
                 }
@@ -153,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onDraw(final Canvas canvas) {
 
             for(int i = 0; i < 3; i++) {
-                canvas.drawCircle(bs[i].getLat() + e, bs[i].getLon() + e, bs[i].getDist(), pRange);
-                canvas.drawCircle(bs[i].getLat() + e, bs[i].getLon() + e, 5, pBeacon);
+                canvas.drawCircle(bs[i].getLat(), bs[i].getLon(), bs[i].getDist(), pRange);
+                canvas.drawCircle(bs[i].getLat(), bs[i].getLon(), 5, pBeacon);
             }
 
             if(centroid != null)
